@@ -1,15 +1,8 @@
-FROM golang as builder
-
+FROM golang:1.14.3-alpine AS build
 WORKDIR /app
-
-COPY . ./app
-
-RUN go run ./app/main.go
+COPY main.go .
+RUN go build -o /desafio .
 
 FROM scratch
-
-WORKDIR /app
-
-COPY --from=builder ./app ./app
-
-CMD [ "./app/desafio-go" ]
+COPY --from=build /desafio /
+CMD [ "./desafio" ]
