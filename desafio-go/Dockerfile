@@ -1,3 +1,15 @@
+FROM golang as builder
+
+WORKDIR /app
+
+COPY . ./app
+
+RUN go run ./app/main.go
+
 FROM scratch
-COPY ./desafio-go .
-CMD [ "./desafio-go" ]
+
+WORKDIR /app
+
+COPY --from=builder ./app ./app
+
+CMD [ "./app/desafio-go" ]
